@@ -1,12 +1,15 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Onboarding from './components/Onboarding';
 import Dashboard from './components/Dashboard';
 import FoodSearch from './components/FoodSearch';
 import StatsHistory from './components/StatsHistory';
 
+const LS_PROFILE = 'twelve_profile';
+const LS_HARI = 'twelve_hariIni';
+
 function sampleWeek(targetKalori) {
   const hari = ['Sen','Sel','Rab','Kam','Jum','Sab','Min'];
-  return hari.map((h, i) => ({ hari: h, kalori: Math.round(targetKalori * (0.7 + Math.random()*0.6)) }));
+  return hari.map((h) => ({ hari: h, kalori: Math.round(targetKalori * (0.7 + Math.random()*0.6)) }));
 }
 
 export default function App() {
@@ -15,6 +18,27 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('sarapan');
   const [hariIni, setHariIni] = useState([]);
 
+  // Load from localStorage on first mount
+  useEffect(() => {
+    try {
+      const p = localStorage.getItem(LS_PROFILE);
+      if (p) setProfile(JSON.parse(p));
+      const h = localStorage.getItem(LS_HARI);
+      if (h) setHariIni(JSON.parse(h));
+    } catch {}
+  }, []);
+
+  // Persist profile and foods
+  useEffect(() => {
+    if (profile) {
+      localStorage.setItem(LS_PROFILE, JSON.stringify(profile));
+    }
+  }, [profile]);
+
+  useEffect(() => {
+    localStorage.setItem(LS_HARI, JSON.stringify(hariIni));
+  }, [hariIni]);
+
   const handleComplete = (data) => {
     setProfile(data);
   };
@@ -22,7 +46,7 @@ export default function App() {
   const handleAddFood = () => setShowSearch(true);
 
   const addFood = (item) => {
-    setHariIni(prev => [...prev, { ...item, waktu: activeTab }]);
+    setHariIni((prev) => [...prev, { ...item, waktu: activeTab }]);
   };
 
   const totalMakro = useMemo(()=> ({
@@ -41,7 +65,7 @@ export default function App() {
   }
 
   return (
-    <div className="font-sans text-slate-800">
+    <div className="font-sans text-slate-900 bg-white">
       <Dashboard profile={profile} hariIni={hariIni} onAddFood={handleAddFood} activeTab={activeTab} setActiveTab={setActiveTab} />
       <div className="mx-auto max-w-[420px] px-4 pb-8">
         <StatsHistory weekly={sampleWeek(profile.targetKalori)} totalMakro={totalMakro} />

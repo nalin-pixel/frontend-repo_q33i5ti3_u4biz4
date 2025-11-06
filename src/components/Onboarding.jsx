@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ChevronRight } from 'lucide-react';
 
 const aktivitasOptions = [
@@ -52,47 +52,48 @@ export default function Onboarding({ onComplete }) {
     });
   };
 
+  // Refine colors per request: dominant white, primary #AAD15F
   return (
-    <div className="min-h-screen bg-gradient-to-b from-emerald-50 to-emerald-100 text-slate-800">
+    <div className="min-h-screen bg-white text-slate-900">
       <div className="mx-auto max-w-[420px] px-4 py-6">
         <div className="mb-6">
-          <h1 className="text-2xl font-semibold text-emerald-900">Selamat Datang di GiziNusantara</h1>
-          <p className="mt-1 text-sm text-emerald-800/80">Pelacak kebutuhan dan asupan kalori harian khas Indonesia.</p>
+          <h1 className="text-2xl font-semibold text-slate-900">Selamat Datang di Twelve</h1>
+          <p className="mt-1 text-sm text-slate-600">Pelacak kebutuhan dan asupan kalori harian khas Indonesia.</p>
         </div>
 
-        <div className="rounded-2xl bg-white p-4 shadow-sm">
-          <h2 className="mb-3 text-lg font-semibold text-emerald-900">Kuisioner Awal</h2>
+        <div className="rounded-2xl bg-white p-4 shadow-[0_6px_30px_rgba(0,0,0,0.06)] ring-1 ring-slate-200/70">
+          <h2 className="mb-3 text-lg font-semibold text-slate-900">Kuisioner Awal</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="mb-1 block text-sm">Nama</label>
-              <input value={nama} onChange={(e)=>setNama(e.target.value)} className="w-full rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-400" placeholder="Nama panggilan" />
+              <input value={nama} onChange={(e)=>setNama(e.target.value)} className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 outline-none ring-emerald-300/0 focus:ring-2" placeholder="Nama panggilan" />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="mb-1 block text-sm">Jenis Kelamin</label>
-                <select value={jenisKelamin} onChange={(e)=>setJenisKelamin(e.target.value)} className="w-full rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2">
+                <select value={jenisKelamin} onChange={(e)=>setJenisKelamin(e.target.value)} className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2">
                   <option value="pria">Pria</option>
                   <option value="wanita">Wanita</option>
                 </select>
               </div>
               <div>
                 <label className="mb-1 block text-sm">Usia</label>
-                <input type="number" min={10} max={100} value={usia} onChange={(e)=>setUsia(e.target.value)} className="w-full rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2" placeholder="tahun" />
+                <input type="number" min={10} max={100} value={usia} onChange={(e)=>setUsia(e.target.value)} className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2" placeholder="tahun" />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="mb-1 block text-sm">Tinggi Badan</label>
-                <input type="number" value={tinggi} onChange={(e)=>setTinggi(e.target.value)} className="w-full rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2" placeholder="cm" />
+                <input type="number" value={tinggi} onChange={(e)=>setTinggi(e.target.value)} className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2" placeholder="cm" />
               </div>
               <div>
                 <label className="mb-1 block text-sm">Berat Badan</label>
-                <input type="number" value={berat} onChange={(e)=>setBerat(e.target.value)} className="w-full rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2" placeholder="kg" />
+                <input type="number" value={berat} onChange={(e)=>setBerat(e.target.value)} className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2" placeholder="kg" />
               </div>
             </div>
             <div>
               <label className="mb-1 block text-sm">Tingkat Aktivitas</label>
-              <select value={aktivitas.key} onChange={(e)=>setAktivitas(aktivitasOptions.find(a=>a.key===e.target.value))} className="w-full rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2">
+              <select value={aktivitas.key} onChange={(e)=>setAktivitas(aktivitasOptions.find(a=>a.key===e.target.value))} className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2">
                 {aktivitasOptions.map(opt=> (
                   <option key={opt.key} value={opt.key}>{opt.label}</option>
                 ))}
@@ -100,20 +101,20 @@ export default function Onboarding({ onComplete }) {
             </div>
             <div>
               <label className="mb-1 block text-sm">Tujuan</label>
-              <select value={tujuan.key} onChange={(e)=>setTujuan(tujuanOptions.find(t=>t.key===e.target.value))} className="w-full rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2">
+              <select value={tujuan.key} onChange={(e)=>setTujuan(tujuanOptions.find(t=>t.key===e.target.value))} className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2">
                 {tujuanOptions.map(opt=> (
                   <option key={opt.key} value={opt.key}>{opt.label}</option>
                 ))}
               </select>
             </div>
 
-            <button disabled={!valid} className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-3 font-medium text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-emerald-300">
+            <button disabled={!valid} className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#AAD15F] px-4 py-3 font-medium text-white transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50">
               Lanjutkan <ChevronRight className="h-4 w-4" />
             </button>
           </form>
         </div>
 
-        <p className="mt-4 text-center text-xs text-emerald-900/70">Data kamu dipakai untuk menghitung BMR dan TDEE guna menentukan target kalori harian.</p>
+        <p className="mt-4 text-center text-xs text-slate-600">Data kamu dipakai untuk menghitung BMR dan TDEE guna menentukan target kalori harian.</p>
       </div>
     </div>
   );
